@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Document from "next/document";
 import React, { useEffect, useState } from "react";
 import getConfig from "next/config";
 import Button from "@material-ui/core/Button";
@@ -8,7 +9,7 @@ import { Typography } from "@material-ui/core";
 import axios from "axios";
 import FundCard from "../src/component/FundCard";
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-function Home() {
+function Home({ ...props }) {
   return (
     <div className="container">
       <Head>
@@ -22,17 +23,17 @@ function Home() {
 
 function Index() {
   const dispatch = useContextDispatch();
-
-  const { count } = useContextState();
+  const { userId, displayName } = useContextState();
   const [fundList, setFundList] = useState([]);
   useEffect(() => {
     axios.get("/funds").then((res) => {
-      console.log(res.data);
       setFundList(res.data.data);
     });
   }, []);
   return (
     <Container>
+      {userId}
+      {displayName}
       {fundList.map((el) => (
         <FundCard fund={el} key={el._id} />
       ))}
@@ -40,10 +41,11 @@ function Index() {
   );
 }
 
-Home.getInitialProps = async (appContext) => {
-  // const appProps = await App.getInitialProps(appContext);
-  console.log(publicRuntimeConfig.baseURL);
-  return { asd: "sadas" };
-};
+// export async function getStaticProps({ params }) {
+//   console.log(params);
+//   return {
+//     props: { ada: "123" }, // will be passed to the page component as props
+//   };
+// }
 
 export default Home;

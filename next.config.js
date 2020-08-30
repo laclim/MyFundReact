@@ -9,5 +9,6 @@ module.exports = {
     // Will be available on both server and client
     staticFolder: "/static",
     baseURL: process.env.BASE_URL,
+    NODE_ENV: process.env.NODE_ENV,
   },
 };

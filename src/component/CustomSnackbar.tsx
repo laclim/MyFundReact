@@ -27,7 +27,7 @@ export default function CustomSnackbar() {
   };
   const classes = useStyles();
   const { showSnackbar, successMessage } = useContextState();
-  console.log(showSnackbar);
+
   return (
     <div className={classes.root}>
       <Snackbar

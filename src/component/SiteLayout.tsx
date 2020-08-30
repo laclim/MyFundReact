@@ -9,9 +9,10 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { useContextDispatch, useContextState } from "../context";
 import Link from "next/link";
 import { Box, Container, Avatar, Fab, Menu, MenuItem } from "@material-ui/core";
-
+import Cookies from "universal-cookie";
 import theme from "../theme";
 import { StyledLink } from "./StyledLink";
+import LoginForm from "./LoginForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,19 +34,25 @@ const useStyles = makeStyles((theme) => ({
 const SiteLayout = ({ children }) => {
   const dispatch = useContextDispatch();
 
-  const { mounted } = useContextState();
+  const { loggedIn } = useContextState();
 
-  return <div>{<MenuBar children={children} />}</div>;
+  return <div>{<MenuBar children={children} loggedIn={loggedIn} />}</div>;
 };
 
-const MenuBar = ({ children }) => {
+const MenuBar = ({ children, loggedIn }) => {
+  const cookies = new Cookies();
   const dispatch = useContextDispatch();
-  const { loggedIn, displayName } = useContextState();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const classes = useStyles();
+
+  const handleLogout = () => {
+    cookies.remove("token", { path: "/" });
+    dispatch({ type: "logout" });
+  };
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -55,8 +62,22 @@ const MenuBar = ({ children }) => {
               <Button variant="text">MyFund</Button>
             </Box>
           </Link>
+          {loggedIn ? (
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : (
+            <Button
+              color="inherit"
+              onClick={() => {
+                dispatch({ type: "openLoginDialog" });
+              }}
+            >
+              Login
+            </Button>
+          )}
 
-          <Button color="inherit">Login</Button>
+          <LoginForm />
         </Toolbar>
       </AppBar>
       <Container maxWidth="md">

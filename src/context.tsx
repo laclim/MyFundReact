@@ -1,9 +1,9 @@
 import React, { useReducer } from "react";
 
 type Action =
-  | { type: "increment" }
-  | { type: "decrement" }
-  | { type: "login"; displayName?: string }
+  | { type: "openLoginDialog" }
+  | { type: "closeLoginDialog" }
+  | { type: "login"; displayName?: string; userId: string }
   | { type: "logout" }
   | { type: "mounted" }
   | { type: "showSnackbar"; successMessage?: string }
@@ -11,12 +11,13 @@ type Action =
   | { type: "updateProfile"; displayName?: string; phoneNumber?: string };
 type Dispatch = (action: Action) => void;
 type State = {
-  count: number;
+  loginDialog: boolean;
   loggedIn: boolean;
   mounted: boolean;
   showSnackbar: boolean;
   successMessage: string;
   displayName: string;
+  userId: string;
 };
 type CountProviderProps = { children: React.ReactNode };
 
@@ -25,17 +26,22 @@ const DispatchContext = React.createContext<Dispatch | undefined>(undefined);
 
 function contextReducer(state, action) {
   switch (action.type) {
-    case "increment": {
-      return { ...state, count: state.count + 1 };
+    case "openLoginDialog": {
+      return { ...state, loginDialog: true };
     }
-    case "decrement": {
-      return { ...state, count: state.count - 1 };
+    case "closeLoginDialog": {
+      return { ...state, loginDialog: false };
     }
     case "login": {
-      return { ...state, loggedIn: true, displayName: action.displayName };
+      return {
+        ...state,
+        loggedIn: true,
+        userId: action.userId,
+        displayName: action.displayName,
+      };
     }
     case "logout": {
-      return { ...state, loggedIn: false, displayName: "" };
+      return { ...state, loggedIn: false, displayName: "", userId: "" };
     }
     case "mounted": {
       return { ...state, mounted: true };
@@ -75,15 +81,15 @@ function useContextDispatch() {
   return context;
 }
 
-export default function Context({ children }) {
+export default function Context({ children, loggedIn, user }) {
   const [state, dispatch] = useReducer(contextReducer, {
-    count: 0,
-    loggedIn: false,
-    mounted: false,
+    loginDialog: false,
+    loggedIn: loggedIn,
     showSnackbar: false,
     successMessage: "",
-    displayName: "",
+    ...user,
   });
+  console.log(state);
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>

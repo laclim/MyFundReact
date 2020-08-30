@@ -108,7 +108,7 @@ const PortfolioCard = ({ marketPortfolio }) => {
             {portfolioTable.map((row) => (
               <TableRow key={row._id}>
                 <TableCell scope="row">{row.market}</TableCell>
-                <TableCell align="right">${row.volume}</TableCell>
+                <TableCell align="right">{row.volume}</TableCell>
                 <TableCell align="right">${row.avgPrice}</TableCell>
                 <TableCell align="right">${row.currentMarketPrice}</TableCell>
                 <TableCell align="right">
