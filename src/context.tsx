@@ -89,7 +89,7 @@ export default function Context({ children, loggedIn, user }) {
     successMessage: "",
     ...user,
   });
-  console.log(state);
+
   return (
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>

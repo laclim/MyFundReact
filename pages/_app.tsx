@@ -30,7 +30,8 @@ export default function MyApp(props) {
 
   axios.defaults.baseURL = publicRuntimeConfig.baseURL;
   axios.defaults.withCredentials = true;
-  if ((publicRuntimeConfig.NODE_ENV = "development")) {
+  console.log(publicRuntimeConfig.NODE_ENV);
+  if (publicRuntimeConfig.NODE_ENV === "development") {
     axios.defaults.headers.Authorization = `Bearer ${clientCookies.get(
       "token"
     )}`;
