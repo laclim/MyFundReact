@@ -13,8 +13,24 @@ function Home({ ...props }) {
   return (
     <div className="container">
       <Head>
-        <title>MyFund</title>
+        <title>My Fund</title>
+
         <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="description"
+          content="A long term investment portfolio which target 30% gain each year"
+        ></meta>
+        <meta
+          name="keywords"
+          content="invest, portfolio, fund, gold, economic, silver, gold stock"
+        />
+        <meta
+          property="og:title"
+          content="A list of portfolio which is managed by Mr Lim An Chong"
+          key="title"
+        />
+
+        <meta property="og:image" content="/images/fund.jpg" />
       </Head>
       <Index />
     </div>
